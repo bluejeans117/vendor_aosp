@@ -29,6 +29,8 @@
 #
 #   TARGET_KERNEL_CLANG_COMPILE        = Compile kernel with clang, defaults to false
 #
+#   TARGET_KERNEL_NEW_CLANG_COMPILE    = Compile kernel with clang-11, defaults to false
+#					    Use this with TARGET_KERNEL_CLANG_COMPILE enabled
 #   TARGET_KERNEL_CLANG_VERSION        = Clang prebuilts version, optional, defaults to clang-stable
 #
 #   TARGET_KERNEL_CLANG_PATH           = Clang prebuilts path, optional
@@ -190,6 +192,13 @@ ifeq ($(TARGET_KERNEL_CLANG_COMPILE),true)
     endif
     ifeq ($(KERNEL_LD),)
         KERNEL_LD :=
+    endif
+    ifeq ($(TARGET_KERNEL_NEW_CLANG_COMPILE),true)
+        KERNEL_CC += AR=llvm-ar
+        KERNEL_CC += NM=llvm-nm
+        KERNEL_CC += OBJCOPY=llvm-objcopy
+        KERNEL_CC += OBJDUMP=llvm-objdump
+        KERNEL_CC += STRIP=llvm-STRIP
     endif
 endif
 
